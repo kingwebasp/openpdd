@@ -62,7 +62,7 @@ type PromotionGoodsApplication struct {
 // PromotionGoodsQuery 多多进宝信息流投放商品报备进度查询
 func PromotionGoodsQuery(clt *core.SDKClient, req *PromotionGoodsQueryRequest) (int, []PromotionGoodsApplication, error) {
 	var resp PromotionGoodsQueryResponse
-	if err := clt.Do(req, &resp, ""); err != nil {
+	if err := clt.DoPromotionGoodsQuery(req, &resp, ""); err != nil {
 		return 0, nil, err
 	}
 	return resp.Response.Total, resp.Response.List, nil
