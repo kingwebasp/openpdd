@@ -226,6 +226,22 @@ func (c *SDKClient) sign(values url.Values) string {
 	return strings.ToUpper(util.Md5String(rawSign))
 }
 
+func (c *SDKClient) DoPromotionGoodsQuery(req model.Request, resp model.Response, accessToken string) error {
+	values, err := query.Values(req)
+	if err != nil {
+		return err
+	}
+	values.Set("type", req.GetType())
+	values.Set("client_id", c.clientID)
+	values.Set("timestamp", strconv.FormatInt(time.Now().Unix(), 10))
+	values.Set("data_type", string(c.dataType))
+	if accessToken != "" {
+		values.Set("access_token", accessToken)
+	}
+	values.Set("sign", c.sign(values))
+	return c.post(values, resp)
+}
+
 func (c *SDKClient) signUploadFields(fields []model.UploadField) string {
 	params := make([]string, 0, len(fields))
 	var builder strings.Builder
